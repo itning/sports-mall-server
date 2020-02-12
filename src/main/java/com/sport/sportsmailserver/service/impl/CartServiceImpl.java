@@ -72,4 +72,14 @@ public class CartServiceImpl implements CartService {
         user.setUsername(loginUser.getUsername());
         return cartRepository.findAllByUser(user, pageable);
     }
+
+    @Override
+    public void delCart(LoginUser loginUser, String commodityId) {
+        Commodity cc = commodityRepository.findById(commodityId).orElseThrow(() -> new IdNotFoundException("商品不存在"));
+
+        User user = new User();
+        user.setUsername(loginUser.getUsername());
+
+        cartRepository.deleteByCommodityAndUser(cc, user);
+    }
 }

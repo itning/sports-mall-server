@@ -32,4 +32,12 @@ public interface CartService {
      * @return 购物车集合
      */
     Page<Cart> getAll(LoginUser loginUser, Pageable pageable);
+
+    /**
+     * 删除购物车某样商品
+     *
+     * @param loginUser   登录用户
+     * @param commodityId 商品ID
+     */
+    void delCart(LoginUser loginUser, String commodityId);
 }

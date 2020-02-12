@@ -9,10 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author itning
@@ -51,7 +48,7 @@ public class CartController {
      * @param pageable  分页
      * @return ResponseEntity
      */
-    @GetMapping("carts")
+    @GetMapping("/carts")
     public ResponseEntity<?> getCarts(@MustUserLogin LoginUser loginUser,
                                       @PageableDefault(
                                               size = 20, sort = {"gmtModified"},
@@ -59,5 +56,19 @@ public class CartController {
                                       )
                                               Pageable pageable) {
         return RestModel.ok(cartService.getAll(loginUser, pageable));
+    }
+
+    /**
+     * 删除购物车某个商品
+     *
+     * @param loginUser   登录用户
+     * @param commodityId 商品ID
+     * @return ResponseEntity
+     */
+    @DeleteMapping("/cart/{commodityId}")
+    public ResponseEntity<?> delCart(@MustUserLogin LoginUser loginUser,
+                                     @PathVariable String commodityId) {
+        cartService.delCart(loginUser, commodityId);
+        return RestModel.noContent();
     }
 }
