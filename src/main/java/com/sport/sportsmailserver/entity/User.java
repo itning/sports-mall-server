@@ -4,9 +4,7 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -46,6 +44,13 @@ public class User implements Serializable {
      */
     @Column(columnDefinition = "text")
     private String address;
+    /**
+     * 所属角色
+     */
+    @SuppressWarnings("JpaDataSourceORMInspection")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "roleId")
+    private Role role;
     /**
      * 创建时间
      */
