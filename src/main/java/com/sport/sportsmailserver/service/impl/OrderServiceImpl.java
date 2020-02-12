@@ -54,6 +54,8 @@ public class OrderServiceImpl implements OrderService {
         user.setUsername(loginUser.getUsername());
         // 减库存
         commodity.setStock(commodity.getStock() - count);
+        // 加销量
+        commodity.setSales(commodity.getSales() + count);
 
         Order order = new Order();
         order.setUser(user);
