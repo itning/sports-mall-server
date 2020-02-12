@@ -43,6 +43,11 @@ public class Commodity implements Serializable {
     @Column(nullable = false, columnDefinition = "int unsigned default 1")
     private int stock;
     /**
+     * 销量，默认为 0
+     */
+    @Column(nullable = false, columnDefinition = "int unsigned default 0")
+    private int sales;
+    /**
      * <p>单价
      * <p>小数位数2位（角，分）
      */
@@ -51,13 +56,13 @@ public class Commodity implements Serializable {
     /**
      * 商品图片地址(主图片)
      */
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "text")
     private String imgMain;
     /**
      * <p>其它图片地址(使用英文分号进行分隔)
      * <p>主要用于详情展示
      */
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "text")
     private String imgSecond;
 
     /**

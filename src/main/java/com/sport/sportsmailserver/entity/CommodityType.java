@@ -2,6 +2,7 @@ package com.sport.sportsmailserver.entity;
 
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -21,17 +22,18 @@ import java.util.List;
 @Entity(name = "mail_commodity_type")
 public class CommodityType implements Serializable {
     /**
-     * 商品分类名
+     * 分类ID
      */
     @Id
-    private String name;
+    @GeneratedValue(generator = "idGenerator")
+    @GenericGenerator(name = "idGenerator", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(length = 36, columnDefinition = "char(36)")
+    private String id;
     /**
-     * 该分类下所有商品
+     * 商品分类名
      */
-    @SuppressWarnings("JpaDataSourceORMInspection")
-    @OneToMany
-    @JoinColumn(name = "commodityTypeId")
-    private List<Commodity> commodities;
+    @Column(nullable = false)
+    private String name;
     /**
      * 创建时间
      */
