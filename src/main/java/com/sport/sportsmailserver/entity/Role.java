@@ -24,11 +24,11 @@ public class Role implements Serializable {
     /**
      * 管理员ID
      */
-    private static final String ROLE_ADMIN_ID = "1";
+    public static final String ROLE_ADMIN_ID = "1";
     /**
      * 用户ID
      */
-    private static final String ROLE_USER_ID = "2";
+    public static final String ROLE_USER_ID = "2";
     /**
      * ID
      */
