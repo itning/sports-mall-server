@@ -64,12 +64,6 @@ public class Commodity implements Serializable {
      */
     @Column(nullable = false, columnDefinition = "text")
     private String imgSecond;
-
-    /**
-     * 商品详情（存储HTML代码）
-     */
-    @Column(columnDefinition = "text")
-    private String detail;
     /**
      * 推荐商品（会展示在首页）
      */

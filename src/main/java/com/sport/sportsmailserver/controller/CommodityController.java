@@ -60,7 +60,8 @@ public class CommodityController {
      * @return ResponseEntity
      */
     @GetMapping("/one/{id}")
-    public ResponseEntity<?> getById(@PathVariable String id) {
+    public ResponseEntity<?> getById(@MustUserLogin LoginUser loginUser,
+                                     @PathVariable String id) {
         return RestModel.ok(commodityService.findById(id));
     }
 }
