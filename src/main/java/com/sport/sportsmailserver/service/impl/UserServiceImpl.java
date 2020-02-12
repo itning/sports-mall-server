@@ -7,6 +7,7 @@ import com.sport.sportsmailserver.entity.User;
 import com.sport.sportsmailserver.exception.IdNotFoundException;
 import com.sport.sportsmailserver.exception.NullFiledException;
 import com.sport.sportsmailserver.exception.SecurityServerException;
+import com.sport.sportsmailserver.exception.TokenException;
 import com.sport.sportsmailserver.repository.RoleRepository;
 import com.sport.sportsmailserver.repository.UserRepository;
 import com.sport.sportsmailserver.service.UserService;
@@ -55,5 +56,26 @@ public class UserServiceImpl implements UserService {
         }
         LoginUser loginUser = OrikaUtils.a2b(user, LoginUser.class);
         return JwtUtils.buildJwt(loginUser);
+    }
+
+    @Override
+    public void modifyUser(LoginUser loginUser, User user) {
+        User savedUser = userRepository.findById(loginUser.getUsername()).orElseThrow(() -> new TokenException("用户不存在", HttpStatus.BAD_REQUEST));
+        if (StringUtils.isNotBlank(user.getPassword())) {
+            savedUser.setPassword(user.getPassword());
+        }
+        if (StringUtils.isNotBlank(user.getAddress())) {
+            savedUser.setAddress(user.getAddress());
+        }
+        if (StringUtils.isNotBlank(user.getEmail())) {
+            if (userRepository.existsByEmail(user.getEmail())) {
+                throw new NullFiledException("该邮箱已经被注册");
+            }
+            savedUser.setEmail(user.getEmail());
+        }
+        if (StringUtils.isNotBlank(user.getTel())) {
+            savedUser.setTel(user.getTel());
+        }
+        userRepository.save(savedUser);
     }
 }

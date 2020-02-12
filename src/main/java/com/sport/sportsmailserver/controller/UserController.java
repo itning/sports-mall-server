@@ -1,13 +1,14 @@
 package com.sport.sportsmailserver.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.sport.sportsmailserver.dto.LoginUser;
 import com.sport.sportsmailserver.dto.RestModel;
+import com.sport.sportsmailserver.entity.User;
+import com.sport.sportsmailserver.security.MustUserLogin;
 import com.sport.sportsmailserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author itning
@@ -34,5 +35,19 @@ public class UserController {
     public ResponseEntity<?> login(@RequestParam String username,
                                    @RequestParam String password) throws JsonProcessingException {
         return RestModel.ok(userService.login(username, password));
+    }
+
+    /**
+     * 修改用户信息
+     *
+     * @param loginUser 登录用户
+     * @param user      新用户信息
+     * @return ResponseEntity
+     */
+    @PatchMapping("/user")
+    public ResponseEntity<?> modifyUserInfo(@MustUserLogin LoginUser loginUser,
+                                            @RequestBody User user) {
+        userService.modifyUser(loginUser, user);
+        return RestModel.noContent();
     }
 }

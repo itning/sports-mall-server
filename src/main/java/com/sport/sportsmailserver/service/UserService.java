@@ -1,6 +1,8 @@
 package com.sport.sportsmailserver.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.sport.sportsmailserver.dto.LoginUser;
+import com.sport.sportsmailserver.entity.User;
 
 /**
  * 用户服务
@@ -18,4 +20,12 @@ public interface UserService {
      * @throws JsonProcessingException JWT构建失败
      */
     String login(String username, String password) throws JsonProcessingException;
+
+    /**
+     * 修改用户信息
+     *
+     * @param loginUser 登录用户
+     * @param user      新用户信息
+     */
+    void modifyUser(LoginUser loginUser, User user);
 }
