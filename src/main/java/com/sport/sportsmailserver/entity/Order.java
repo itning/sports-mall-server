@@ -22,6 +22,54 @@ import java.util.Date;
 @Entity(name = "mail_order")
 public class Order implements Serializable {
     /**
+     * 订单状态
+     */
+    public enum STATUS {
+        /**
+         * 0：订单已经被用户删除
+         */
+        DEL_BY_USER(0),
+        /**
+         * 1：已下单（待付款）
+         */
+        ORDERED(1),
+        /**
+         * 2：已付款（待发货）
+         */
+        BUY(2),
+        /**
+         * 3：已发货（待收货）
+         */
+        SHIP(3),
+        /**
+         * 4：已收货（待评价）
+         */
+        RECEIPT(4),
+        /**
+         * 5：已评价（完成订单）
+         */
+        EVALUATION(5),
+        /**
+         * 6：订单已经被商家删除
+         */
+        DEL_BY_ADMIN(6),
+        /**
+         * 7：订单已经被商家和用户同时删除
+         */
+        DEL_ALL(7);
+
+        private int status;
+
+        STATUS(int status) {
+            this.status = status;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+    }
+
+    /**
      * 订单ID
      */
     @Id

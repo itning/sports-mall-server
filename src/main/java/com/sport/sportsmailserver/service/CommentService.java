@@ -1,6 +1,8 @@
 package com.sport.sportsmailserver.service;
 
 import com.sport.sportsmailserver.dto.CommentDTO;
+import com.sport.sportsmailserver.dto.LoginUser;
+import com.sport.sportsmailserver.entity.Comment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -19,4 +21,14 @@ public interface CommentService {
      * @return 评论集合
      */
     Page<CommentDTO> findByCommodityId(String commodityId, Pageable pageable);
+
+    /**
+     * 新评论
+     *
+     * @param loginUser 登录用户
+     * @param orderId   订单ID
+     * @param content   内容
+     * @return 评论
+     */
+    Comment newComment(LoginUser loginUser, String orderId, String content);
 }

@@ -9,9 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author itning
@@ -43,5 +41,20 @@ public class CommentController {
                                                )
                                                        Pageable pageable) {
         return RestModel.ok(commentService.findByCommodityId(commodityId, pageable));
+    }
+
+    /**
+     * 新评价
+     *
+     * @param loginUser 登录用户
+     * @param orderId   订单ID
+     * @param content   内容
+     * @return ResponseEntity
+     */
+    @PostMapping("/comment")
+    public ResponseEntity<?> newComment(@MustUserLogin LoginUser loginUser,
+                                        @RequestParam String orderId,
+                                        @RequestParam String content) {
+        return RestModel.created(commentService.newComment(loginUser, orderId, content));
     }
 }
