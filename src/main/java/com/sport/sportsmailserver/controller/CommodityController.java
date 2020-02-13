@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
+ * 商品控制器
+ *
  * @author itning
  * @date 2020/2/12 12:46
  */
@@ -63,5 +65,24 @@ public class CommodityController {
     public ResponseEntity<?> getById(@MustUserLogin LoginUser loginUser,
                                      @PathVariable String id) {
         return RestModel.ok(commodityService.findById(id));
+    }
+
+    /**
+     * 搜索商品
+     *
+     * @param loginUser 登录用户
+     * @param keyword   关键字
+     * @param pageable  分页
+     * @return ResponseEntity
+     */
+    @GetMapping("/search/{keyword}")
+    public ResponseEntity<?> search(@MustUserLogin LoginUser loginUser,
+                                    @PathVariable String keyword,
+                                    @PageableDefault(
+                                            size = 20, sort = {"gmtModified"},
+                                            direction = Sort.Direction.DESC
+                                    )
+                                            Pageable pageable) {
+        return RestModel.ok(commodityService.search(keyword, pageable));
     }
 }

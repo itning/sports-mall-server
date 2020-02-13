@@ -56,4 +56,12 @@ public class CommodityServiceImpl implements CommodityService {
         }
         return commodity;
     }
+
+    @Override
+    public Page<Commodity> search(String keyword, Pageable pageable) {
+        if (StringUtils.isBlank(keyword)) {
+            throw new NullFiledException("关键字不能为空");
+        }
+        return commodityRepository.findAllByTakeOffAndNameLike(false, "%" + keyword + "%", pageable);
+    }
 }

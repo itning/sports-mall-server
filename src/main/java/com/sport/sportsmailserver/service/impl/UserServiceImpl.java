@@ -61,9 +61,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void modifyUser(LoginUser loginUser, User user) {
         User savedUser = userRepository.findById(loginUser.getUsername()).orElseThrow(() -> new TokenException("用户不存在", HttpStatus.BAD_REQUEST));
-        if (StringUtils.isNotBlank(user.getPassword())) {
-            savedUser.setPassword(user.getPassword());
-        }
         if (StringUtils.isNotBlank(user.getAddress())) {
             savedUser.setAddress(user.getAddress());
         }
@@ -77,5 +74,45 @@ public class UserServiceImpl implements UserService {
             savedUser.setTel(user.getTel());
         }
         userRepository.save(savedUser);
+    }
+
+    @Override
+    public LoginUser reg(String username, String email, String phone, String password) {
+        if (StringUtils.isAnyBlank(username, email, phone, password)) {
+            throw new NullFiledException("某些字段为空");
+        }
+        if (userRepository.existsByEmail(email)) {
+            throw new SecurityServerException("邮箱已被注册", HttpStatus.BAD_REQUEST);
+        }
+        if (userRepository.existsById(username)) {
+            throw new SecurityServerException("用户名已被注册", HttpStatus.BAD_REQUEST);
+        }
+        Role role = new Role();
+        role.setId(Role.ROLE_USER_ID);
+
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEmail(email);
+        user.setTel(phone);
+        user.setRole(role);
+        User savedUser = userRepository.save(user);
+        return OrikaUtils.a2b(savedUser, LoginUser.class);
+    }
+
+    @Override
+    public void changePwd(LoginUser loginUser, String oldPwd, String newPwd) {
+        if (StringUtils.isAnyBlank(oldPwd, newPwd)) {
+            throw new NullFiledException("密码不能为空");
+        }
+        User user = userRepository.findById(loginUser.getUsername()).orElseThrow(() -> new TokenException("用户不存在", HttpStatus.BAD_REQUEST));
+        if (!oldPwd.equals(user.getPassword())) {
+            throw new SecurityServerException("密码错误", HttpStatus.BAD_REQUEST);
+        }
+        if (newPwd.equals(user.getPassword())) {
+            throw new SecurityServerException("新密码不能和旧密码相同", HttpStatus.BAD_REQUEST);
+        }
+        user.setPassword(newPwd);
+        userRepository.save(user);
     }
 }

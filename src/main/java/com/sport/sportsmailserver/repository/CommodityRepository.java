@@ -31,4 +31,14 @@ public interface CommodityRepository extends JpaRepository<Commodity, String> {
      * @return 商品集合
      */
     List<Commodity> findAllByRecommendedAndTakeOff(boolean recommended, boolean takeOff);
+
+    /**
+     * 搜索商品
+     *
+     * @param takeOff  下架的商品？
+     * @param nameLike 近似标题
+     * @param pageable 分页
+     * @return 商品集合
+     */
+    Page<Commodity> findAllByTakeOffAndNameLike(boolean takeOff, String nameLike, Pageable pageable);
 }

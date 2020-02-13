@@ -34,4 +34,13 @@ public interface CommodityService {
      * @return 商品
      */
     Commodity findById(String id);
+
+    /**
+     * 搜索商品
+     *
+     * @param keyword  关键字
+     * @param pageable 分页
+     * @return 商品集合
+     */
+    Page<Commodity> search(String keyword, Pageable pageable);
 }
