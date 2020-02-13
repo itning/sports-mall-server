@@ -51,12 +51,11 @@ public interface OrderService {
     /**
      * 订单发货
      *
-     * @param loginUser          登录用户
      * @param orderId            订单ID
      * @param expressInformation 快递信息
      * @return 订单
      */
-    Order ship(LoginUser loginUser, String orderId, String expressInformation);
+    Order ship(String orderId, String expressInformation);
 
     /**
      * 订单确认收获
@@ -66,4 +65,13 @@ public interface OrderService {
      * @return 订单
      */
     Order receipt(LoginUser loginUser, String orderId);
+
+    /**
+     * 获取所有订单
+     *
+     * @param status   订单状态
+     * @param pageable 分页
+     * @return 订单集合
+     */
+    Page<Order> getAll(int[] status, Pageable pageable);
 }

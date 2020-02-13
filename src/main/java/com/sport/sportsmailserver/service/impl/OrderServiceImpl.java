@@ -70,21 +70,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<Order> getAll(LoginUser loginUser, int[] status, Pageable pageable) {
-        if (null == status || status.length == 0) {
-            status = new int[]{
-                    Order.STATUS.ORDERED.getStatus(),
-                    Order.STATUS.BUY.getStatus(),
-                    Order.STATUS.SHIP.getStatus(),
-                    Order.STATUS.RECEIPT.getStatus(),
-                    Order.STATUS.EVALUATION.getStatus(),
-            };
-        }
-        final int[] ss = Arrays.stream(status)
-                .filter(i -> i != Order.STATUS.DEL_ALL.getStatus())
-                .filter(i -> i != Order.STATUS.DEL_BY_USER.getStatus())
-                .filter(i -> i != Order.STATUS.DEL_BY_ADMIN.getStatus())
-                .toArray();
-        System.out.println(Arrays.toString(ss));
+        final int[] ss = getStatus(status);
         return orderRepository.findAll((Specification<Order>) (root, query, cb) -> {
             List<Predicate> list = new ArrayList<>();
 
@@ -131,11 +117,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order ship(LoginUser loginUser, String orderId, String expressInformation) {
+    public Order ship(String orderId, String expressInformation) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new IdNotFoundException("订单不存在"));
-        if (!order.getUser().getUsername().equals(loginUser.getUsername())) {
-            throw new SecurityServerException("操作失败", HttpStatus.FORBIDDEN);
-        }
         if (order.getStatus() != Order.STATUS.BUY.getStatus()) {
             throw new SecurityServerException("订单未付款或被删除", HttpStatus.BAD_REQUEST);
         }
@@ -156,7 +139,37 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.save(order);
     }
 
+    @Override
+    public Page<Order> getAll(int[] status, Pageable pageable) {
+        final int[] ss = getStatus(status);
+        return orderRepository.findAll((Specification<Order>) (root, query, cb) -> {
+            List<Predicate> list = new ArrayList<>();
+            for (int s : ss) {
+                list.add(cb.equal(root.get("status"), s));
+            }
+            Predicate[] p = new Predicate[list.size()];
+            return cb.or(list.toArray(p));
+        }, pageable);
+    }
+
     private BigDecimal getTotalPrice(BigDecimal price, int count) {
         return price.multiply(BigDecimal.valueOf(count));
+    }
+
+    private int[] getStatus(int[] status) {
+        if (null == status || status.length == 0) {
+            status = new int[]{
+                    Order.STATUS.ORDERED.getStatus(),
+                    Order.STATUS.BUY.getStatus(),
+                    Order.STATUS.SHIP.getStatus(),
+                    Order.STATUS.RECEIPT.getStatus(),
+                    Order.STATUS.EVALUATION.getStatus(),
+            };
+        }
+        return Arrays.stream(status)
+                .filter(i -> i != Order.STATUS.DEL_ALL.getStatus())
+                .filter(i -> i != Order.STATUS.DEL_BY_USER.getStatus())
+                .filter(i -> i != Order.STATUS.DEL_BY_ADMIN.getStatus())
+                .toArray();
     }
 }
