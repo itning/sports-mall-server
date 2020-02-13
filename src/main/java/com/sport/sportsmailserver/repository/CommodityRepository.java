@@ -49,4 +49,13 @@ public interface CommodityRepository extends JpaRepository<Commodity, String> {
      * @return 有返回<code>true</code>
      */
     boolean existsByCommodityType(CommodityType commodityType);
+
+    /**
+     * 查询所有商品
+     *
+     * @param takeOff  已下架？
+     * @param pageable 分页
+     * @return 商品集合
+     */
+    Page<Commodity> findAllByTakeOff(boolean takeOff, Pageable pageable);
 }

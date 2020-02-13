@@ -1,7 +1,9 @@
 package com.sport.sportsmailserver.controller;
 
+import com.sport.sportsmailserver.dto.CommodityDTO;
 import com.sport.sportsmailserver.dto.LoginUser;
 import com.sport.sportsmailserver.dto.RestModel;
+import com.sport.sportsmailserver.security.MustAdminLogin;
 import com.sport.sportsmailserver.security.MustUserLogin;
 import com.sport.sportsmailserver.service.CommodityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,5 +86,36 @@ public class CommodityController {
                                     )
                                             Pageable pageable) {
         return RestModel.ok(commodityService.search(keyword, pageable));
+    }
+
+    /**
+     * 管理员获取所有商品
+     *
+     * @param loginUser 登录用户
+     * @param pageable  分页
+     * @return ResponseEntity
+     */
+    @GetMapping("/admin")
+    public ResponseEntity<?> getAll(@MustAdminLogin LoginUser loginUser,
+                                    @PageableDefault(
+                                            size = 20, sort = {"gmtModified"},
+                                            direction = Sort.Direction.DESC
+                                    )
+                                            Pageable pageable) {
+        return RestModel.ok(commodityService.findAll(pageable));
+    }
+
+    /**
+     * 修改商品信息
+     *
+     * @param loginUser 登录用户
+     * @param commodity 商品
+     * @return ResponseEntity
+     */
+    @PatchMapping("/admin")
+    public ResponseEntity<?> modify(@MustAdminLogin LoginUser loginUser,
+                                    @RequestBody CommodityDTO commodity) {
+        commodityService.modify(commodity);
+        return RestModel.noContent();
     }
 }

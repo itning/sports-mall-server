@@ -1,5 +1,6 @@
 package com.sport.sportsmailserver.service;
 
+import com.sport.sportsmailserver.dto.CommodityDTO;
 import com.sport.sportsmailserver.entity.Commodity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,4 +44,19 @@ public interface CommodityService {
      * @return 商品集合
      */
     Page<Commodity> search(String keyword, Pageable pageable);
+
+    /**
+     * 获取所有商品
+     *
+     * @param pageable 分页
+     * @return 商品集合
+     */
+    Page<Commodity> findAll(Pageable pageable);
+
+    /**
+     * 修改商品
+     *
+     * @param commodity 商品
+     */
+    void modify(CommodityDTO commodity);
 }

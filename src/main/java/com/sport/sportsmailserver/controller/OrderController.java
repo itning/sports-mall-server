@@ -3,6 +3,7 @@ package com.sport.sportsmailserver.controller;
 import com.sport.sportsmailserver.dto.LoginUser;
 import com.sport.sportsmailserver.dto.RestModel;
 import com.sport.sportsmailserver.security.MustAdminLogin;
+import com.sport.sportsmailserver.security.MustLogin;
 import com.sport.sportsmailserver.security.MustUserLogin;
 import com.sport.sportsmailserver.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,14 +64,15 @@ public class OrderController {
     }
 
     /**
-     * 用户删除订单
+     * 删除订单
      *
      * @param loginUser 登录用户
      * @param id        订单ID
      * @return ResponseEntity
      */
     @DeleteMapping("/order/{id}")
-    public ResponseEntity<?> delOrder(@MustUserLogin LoginUser loginUser, @PathVariable String id) {
+    public ResponseEntity<?> delOrder(@MustLogin(role = {MustLogin.ROLE.ADMIN, MustLogin.ROLE.USER}) LoginUser loginUser,
+                                      @PathVariable String id) {
         orderService.delOrder(loginUser, id);
         return RestModel.noContent();
     }
