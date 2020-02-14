@@ -2,13 +2,13 @@ package com.sport.sportsmailserver.controller;
 
 import com.sport.sportsmailserver.dto.LoginUser;
 import com.sport.sportsmailserver.dto.RestModel;
-import com.sport.sportsmailserver.security.MustUserLogin;
+import com.sport.sportsmailserver.entity.CommodityDetail;
+import com.sport.sportsmailserver.security.MustAdminLogin;
+import com.sport.sportsmailserver.security.MustLogin;
 import com.sport.sportsmailserver.service.CommodityDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 商品详情
@@ -33,8 +33,22 @@ public class CommodityDetailController {
      * @return ResponseEntity
      */
     @GetMapping("/commodityDetail/{commodityId}")
-    public ResponseEntity<?> findByCommodityId(@MustUserLogin LoginUser loginUser,
+    public ResponseEntity<?> findByCommodityId(@MustLogin(role = {MustLogin.ROLE.ADMIN, MustLogin.ROLE.USER}) LoginUser loginUser,
                                                @PathVariable String commodityId) {
         return RestModel.ok(commodityDetailService.findByCommodityId(commodityId));
+    }
+
+    /**
+     * 修改商品详情或新增
+     *
+     * @param loginUser       登录用户
+     * @param commodityDetail 商品详情
+     * @return ResponseEntity
+     */
+    @PatchMapping("/commodityDetail")
+    public ResponseEntity<?> modifyOrAdd(@MustAdminLogin LoginUser loginUser,
+                                         @RequestBody CommodityDetail commodityDetail) {
+        commodityDetailService.modifyOrAdd(commodityDetail);
+        return RestModel.noContent();
     }
 }
