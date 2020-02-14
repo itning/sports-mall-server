@@ -5,6 +5,7 @@ import com.sport.sportsmailserver.entity.Commodity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -59,4 +60,19 @@ public interface CommodityService {
      * @param commodity 商品
      */
     void modify(CommodityDTO commodity);
+
+    /**
+     * 添加商品
+     *
+     * @param name            标题
+     * @param price           价格
+     * @param stock           库存
+     * @param recommended     推荐商品
+     * @param commodityTypeId 商品分类ID
+     * @param imgMain         主图
+     * @param imgSecond       副图
+     * @param detail          商品详情
+     * @return 商品
+     */
+    Commodity add(String name, BigDecimal price, int stock, boolean recommended, String commodityTypeId, String imgMain, String imgSecond, String detail);
 }

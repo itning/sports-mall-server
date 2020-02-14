@@ -2,10 +2,12 @@ package com.sport.sportsmailserver.service.impl;
 
 import com.sport.sportsmailserver.dto.CommodityDTO;
 import com.sport.sportsmailserver.entity.Commodity;
+import com.sport.sportsmailserver.entity.CommodityDetail;
 import com.sport.sportsmailserver.entity.CommodityType;
 import com.sport.sportsmailserver.exception.IdNotFoundException;
 import com.sport.sportsmailserver.exception.NullFiledException;
 import com.sport.sportsmailserver.exception.SecurityServerException;
+import com.sport.sportsmailserver.repository.CommodityDetailRepository;
 import com.sport.sportsmailserver.repository.CommodityRepository;
 import com.sport.sportsmailserver.repository.CommodityTypeRepository;
 import com.sport.sportsmailserver.service.CommodityService;
@@ -17,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,13 +30,17 @@ import java.util.List;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class CommodityServiceImpl implements CommodityService {
+    private static final String SECOND_IMG_SUFFIX = ";";
+
     private final CommodityRepository commodityRepository;
     private final CommodityTypeRepository commodityTypeRepository;
+    private final CommodityDetailRepository commodityDetailRepository;
 
     @Autowired
-    public CommodityServiceImpl(CommodityRepository commodityRepository, CommodityTypeRepository commodityTypeRepository) {
+    public CommodityServiceImpl(CommodityRepository commodityRepository, CommodityTypeRepository commodityTypeRepository, CommodityDetailRepository commodityDetailRepository) {
         this.commodityRepository = commodityRepository;
         this.commodityTypeRepository = commodityTypeRepository;
+        this.commodityDetailRepository = commodityDetailRepository;
     }
 
     @Override
@@ -105,7 +112,10 @@ public class CommodityServiceImpl implements CommodityService {
         // 7.副图片变
         if (commodity.getImgSecond() != null) {
             try {
-                String[] split = commodity.getImgSecond().split(";");
+                if (commodity.getImgSecond().endsWith(SECOND_IMG_SUFFIX)) {
+                    commodity.setImgSecond(commodity.getImgSecond().substring(0, commodity.getImgSecond().length() - 1));
+                }
+                String[] split = commodity.getImgSecond().split(SECOND_IMG_SUFFIX);
                 System.out.println(Arrays.toString(split));
             } catch (Exception e) {
                 throw new SecurityServerException("副图片格式错误", HttpStatus.BAD_REQUEST);
@@ -118,5 +128,45 @@ public class CommodityServiceImpl implements CommodityService {
             saved.setCommodityType(commodityType);
         }
         commodityRepository.save(saved);
+    }
+
+    @Override
+    public Commodity add(String name, BigDecimal price, int stock, boolean recommended, String commodityTypeId, String imgMain, String imgSecond, String detail) {
+        if (StringUtils.isAnyBlank(name, commodityTypeId, imgMain, imgSecond, detail)) {
+            throw new NullFiledException("字段为空");
+        }
+        if (price.intValue() < 0) {
+            throw new SecurityServerException("价格不能为负数", HttpStatus.BAD_REQUEST);
+        }
+        if (stock < 0) {
+            throw new SecurityServerException("库存不能为负数", HttpStatus.BAD_REQUEST);
+        }
+        try {
+            if (imgSecond.endsWith(SECOND_IMG_SUFFIX)) {
+                imgSecond = imgSecond.substring(0, imgSecond.length() - 1);
+            }
+            String[] split = imgSecond.split(SECOND_IMG_SUFFIX);
+            System.out.println(Arrays.toString(split));
+        } catch (Exception e) {
+            throw new SecurityServerException("副图片格式错误", HttpStatus.BAD_REQUEST);
+        }
+        CommodityType commodityType = commodityTypeRepository.findById(commodityTypeId).orElseThrow(() -> new IdNotFoundException("商品分类不存在"));
+        Commodity commodity = new Commodity();
+        commodity.setName(name);
+        commodity.setStock(stock);
+        commodity.setSales(0);
+        commodity.setPrice(price);
+        commodity.setImgMain(imgMain);
+        commodity.setImgSecond(imgSecond);
+        commodity.setRecommended(recommended);
+        commodity.setTakeOff(false);
+        commodity.setCommodityType(commodityType);
+        Commodity saved = commodityRepository.save(commodity);
+
+        CommodityDetail commodityDetail = new CommodityDetail();
+        commodityDetail.setCommodity(saved);
+        commodityDetail.setDetail(detail);
+        commodityDetailRepository.save(commodityDetail);
+        return saved;
     }
 }

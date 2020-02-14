@@ -13,6 +13,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 /**
  * 商品控制器
  *
@@ -117,5 +119,32 @@ public class CommodityController {
                                     @RequestBody CommodityDTO commodity) {
         commodityService.modify(commodity);
         return RestModel.noContent();
+    }
+
+    /**
+     * 添加商品
+     *
+     * @param loginUser       登录用户
+     * @param name            标题
+     * @param price           价格
+     * @param stock           库存
+     * @param recommended     推荐商品
+     * @param commodityTypeId 商品分类ID
+     * @param imgMain         主图
+     * @param imgSecond       副图
+     * @param detail          商品详情
+     * @return ResponseEntity
+     */
+    @PostMapping("/admin")
+    public ResponseEntity<?> add(@MustAdminLogin LoginUser loginUser,
+                                 @RequestParam String name,
+                                 @RequestParam BigDecimal price,
+                                 @RequestParam BigDecimal stock,
+                                 @RequestParam boolean recommended,
+                                 @RequestParam String commodityTypeId,
+                                 @RequestParam String imgMain,
+                                 @RequestParam String imgSecond,
+                                 @RequestParam(required = false) String detail) {
+        return RestModel.created(commodityService.add(name, price, stock.intValue(), recommended, commodityTypeId, imgMain, imgSecond, detail));
     }
 }
