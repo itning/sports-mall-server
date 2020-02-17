@@ -5,6 +5,8 @@ import com.sport.sportsmailserver.entity.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.math.BigDecimal;
+
 /**
  * @author itning
  * @date 2020/2/12 19:12
@@ -74,4 +76,13 @@ public interface OrderService {
      * @return 订单集合
      */
     Page<Order> getAll(int[] status, Pageable pageable);
+
+    /**
+     * 修改订单总价格
+     *
+     * @param id       订单ID
+     * @param newPrice 新价格
+     * @return 新订单
+     */
+    Order changePrice(String id, BigDecimal newPrice);
 }

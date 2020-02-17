@@ -165,6 +165,13 @@ public class OrderServiceImpl implements OrderService {
         }, pageable);
     }
 
+    @Override
+    public Order changePrice(String id, BigDecimal newPrice) {
+        Order order = orderRepository.findById(id).orElseThrow(() -> new IdNotFoundException("订单没有找到"));
+        order.setSumPrice(newPrice);
+        return orderRepository.save(order);
+    }
+
     private BigDecimal getTotalPrice(BigDecimal price, int count) {
         return price.multiply(BigDecimal.valueOf(count));
     }

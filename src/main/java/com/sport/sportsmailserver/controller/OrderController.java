@@ -13,6 +13,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 /**
  * 订单
  *
@@ -135,5 +137,20 @@ public class OrderController {
                                                  )
                                                          Pageable pageable) {
         return RestModel.ok(orderService.getAll(status, pageable));
+    }
+
+    /**
+     * 修改订单
+     *
+     * @param loginUser 登录用户
+     * @param id        订单ID
+     * @param newPrice  新价格
+     * @return ResponseEntity
+     */
+    @PostMapping("/order/price")
+    public ResponseEntity<?> changeOrderPrice(@MustAdminLogin LoginUser loginUser,
+                                              @RequestParam String id,
+                                              @RequestParam BigDecimal newPrice) {
+        return RestModel.created(orderService.changePrice(id, newPrice));
     }
 }
