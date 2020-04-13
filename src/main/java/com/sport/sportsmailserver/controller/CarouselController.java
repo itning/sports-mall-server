@@ -3,7 +3,6 @@ package com.sport.sportsmailserver.controller;
 import com.sport.sportsmailserver.dto.CarouselDTO;
 import com.sport.sportsmailserver.dto.LoginUser;
 import com.sport.sportsmailserver.dto.RestModel;
-import com.sport.sportsmailserver.entity.Carousel;
 import com.sport.sportsmailserver.security.MustAdminLogin;
 import com.sport.sportsmailserver.service.CarouselService;
 import org.springframework.beans.factory.annotation.Autowired;
