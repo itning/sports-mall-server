@@ -20,7 +20,7 @@ import java.util.Date;
  * @see java.io.Serializable
  */
 @Data
-@Entity(name = "mail_comment")
+@Entity(name = "mall_comment")
 @Table(indexes = {
         @Index(name = "idx_user_id", columnList = "userId"),
         @Index(name = "idx_commodity_id", columnList = "commodityId")

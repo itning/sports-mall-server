@@ -20,7 +20,7 @@ import java.util.Date;
  * @see java.io.Serializable
  */
 @Data
-@Entity(name = "mail_role")
+@Entity(name = "mall_role")
 public class Role implements Serializable {
     /**
      * 管理员ID

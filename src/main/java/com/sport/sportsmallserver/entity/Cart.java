@@ -18,7 +18,7 @@ import java.util.Date;
  * @see java.io.Serializable
  */
 @Data
-@Entity(name = "mail_cart")
+@Entity(name = "mall_cart")
 @IdClass(CartPrimaryKey.class)
 public class Cart implements Serializable {
     /**

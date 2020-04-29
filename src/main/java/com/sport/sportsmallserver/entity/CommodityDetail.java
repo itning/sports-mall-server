@@ -17,7 +17,7 @@ import java.util.Date;
  * @see java.io.Serializable
  */
 @Data
-@Entity(name = "mail_commodity_detail")
+@Entity(name = "mall_commodity_detail")
 public class CommodityDetail implements Serializable {
     /**
      * ID

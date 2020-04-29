@@ -18,7 +18,7 @@ import java.util.Date;
  * @see java.io.Serializable
  */
 @Data
-@Entity(name = "mail_user")
+@Entity(name = "mall_user")
 public class User implements Serializable {
     /**
      * 用户名（唯一）

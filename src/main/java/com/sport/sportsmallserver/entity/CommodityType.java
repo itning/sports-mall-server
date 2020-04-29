@@ -22,7 +22,7 @@ import java.util.Date;
  * @see java.io.Serializable
  */
 @Data
-@Entity(name = "mail_commodity_type")
+@Entity(name = "mall_commodity_type")
 public class CommodityType implements Serializable {
     /**
      * 分类ID

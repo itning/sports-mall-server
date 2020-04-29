@@ -22,7 +22,7 @@ import java.util.Date;
  * @see java.io.Serializable
  */
 @Data
-@Entity(name = "mail_carousel")
+@Entity(name = "mall_carousel")
 public class Carousel implements Serializable {
     /**
      * 水平走马灯

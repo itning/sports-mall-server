@@ -21,7 +21,7 @@ import java.util.Date;
  * @see java.io.Serializable
  */
 @Data
-@Entity(name = "mail_commodity")
+@Entity(name = "mall_commodity")
 @Table(indexes = {@Index(name = "idx_name", columnList = "name")})
 public class Commodity implements Serializable {
     /**

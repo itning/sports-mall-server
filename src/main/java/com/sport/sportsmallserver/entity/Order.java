@@ -20,7 +20,7 @@ import java.util.Date;
  * @see java.io.Serializable
  */
 @Data
-@Entity(name = "mail_order")
+@Entity(name = "mall_order")
 public class Order implements Serializable {
     /**
      * 订单状态
