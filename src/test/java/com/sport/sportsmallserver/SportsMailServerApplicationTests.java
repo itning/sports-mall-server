@@ -1,4 +1,4 @@
-package com.sport.sportsmailserver;
+package com.sport.sportsmallserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
