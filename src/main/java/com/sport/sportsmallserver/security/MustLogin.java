@@ -29,8 +29,8 @@ public @interface MustLogin {
          */
         USER("2", "用户");
 
-        private String id;
-        private String name;
+        private final String id;
+        private final String name;
 
         ROLE(String id, String name) {
             this.id = id;

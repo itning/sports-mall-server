@@ -15,7 +15,7 @@
 
 ## 架构：
 - MySQL 8
-- Java 8
+- Java 11
 - Spring Boot 2
 - Vue.JS
 

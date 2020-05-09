@@ -3,6 +3,9 @@ package com.sport.sportsmallserver;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author itning
+ */
 @SpringBootApplication
 public class SportsMallServerApplication {
 

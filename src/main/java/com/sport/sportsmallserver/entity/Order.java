@@ -59,7 +59,7 @@ public class Order implements Serializable {
          */
         DEL_ALL(7);
 
-        private int status;
+        private final int status;
 
         STATUS(int status) {
             this.status = status;
