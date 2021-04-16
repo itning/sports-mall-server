@@ -10,7 +10,7 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/itning/sports-mall-server.svg)](https://github.com/itning/sports-mall-server/commits)
 [![GitHub release](https://img.shields.io/github/release/itning/sports-mall-server.svg)](https://github.com/itning/sports-mall-server/releases)
 [![GitHub repo size in bytes](https://img.shields.io/github/repo-size/itning/sports-mall-server.svg)](https://github.com/itning/sports-mall-server)
-[![HitCount](http://hits.dwyl.io/itning/sports-mall-server.svg)](http://hits.dwyl.io/itning/sports-mall-server)
+[![HitCount](http://hits.dwyl.com/itning/sports-mall-server.svg)](http://hits.dwyl.com/itning/sports-mall-server)
 [![language](https://img.shields.io/badge/language-JAVA-green.svg)](https://github.com/itning/sports-mall-server)
 
 ## 架构：
